@@ -1,0 +1,20 @@
+<ng-container *ngTemplateOutlet="tree; context: { node: data }">
+</ng-container>
+
+<ng-template #tree let-node="node">
+  <p [class.withChildren]="node.children" (click)="setActive(node)">
+    <span *ngIf="!node.children">•</span>
+    <span *ngIf="node.children && !activeIds.has(node.id)">▶</span>
+    <span *ngIf="node.children && activeIds.has(node.id)">▼</span>
+    {{ node.name }}
+  </p>
+  <ul *ngIf="node.children && activeIds.has(node.id)">
+    <ng-container *ngFor="let child of node.children">
+      <li>
+        <ng-container *ngTemplateOutlet="tree; context: { node: child }">
+        </ng-container>
+      </li>
+    </ng-container>
+  </ul>
+</ng-template>
+
